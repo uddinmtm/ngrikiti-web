@@ -3,30 +3,34 @@
  * originally from http://techslides.com/curl-with-nodejs (Curl with nodejs)
  */
 
-var fs = require('fs');
 var request = require('request');
+var slicer = require('./slicer');
 
-var urls = new Array("https://kbbi.web.id/juragan/ajax_","https://kbbi.web.id/bos/ajax_");
+var url = "https://builtwith.com/google.com";
 
-function scrape (url, file) {
+// text telegram format
+function printData(data) {
+    var print;
+    data.forEach(function (value) {
+        print += "*" + value.title + "*\n";
+        var items = value.item;
+        items.forEach(function (item) {
+            print += "- _" + item.title + "_\n";
+        });
+    });
+
+    return print;
+}
+
+function scrape (url) {
     request(url, function(error, response, body){
         if (!error && response.statusCode == 200) {
-            console.log('request url: '+url); 
-            console.log('request file: '+file); 
-            fs.writeFile(file, body, 'utf8', function (err) {
-                if (err) {
-                    console.log('error when writing to file'); 
-                } 
-            });
+            var data = slicer.builtweb(body);
+            // console.log(data);
+
+            return printData(data);
         } 
     });
 }
 
-for (var i = 0; i < urls.length; i++) {
-    var url = urls[i];
-    var file = url.replace(/\/|:|\./g,'')+'.txt';
-    
-    console.log(file);
-    console.log(url);
-    scrape(url, file);
-}
+scrape(url);

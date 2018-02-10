@@ -1,1 +1,0 @@
-[{"x":5,"w":"jeragan ? juragan","d":"<b>je&#183;ra&#183;gan ? juragan<\/b>","msg":""},{"x":1,"w":"juragan","d":"<b>ju&#183;ra&#183;gan<\/b> <em>n<\/em> <b>1<\/b> sebutan orang upahan terhadap majikan; tuan; nyonya; <b>2<\/b> pemilik perusahaan (terutama perusahaan batik): <em>ia adalah seorang -- batik yang kaya raya<\/em>; <b>3<\/b> pemilik dan pemimpin perahu (kapal)"}]
