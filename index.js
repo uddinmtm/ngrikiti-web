@@ -3,17 +3,17 @@
  * originally from http://techslides.com/curl-with-nodejs (Curl with nodejs)
  */
 
-var request = require('request');
-var slicer = require('./slicer');
+const request = require('request');
+const slicer = require('./slicer');
 
-var url = "https://builtwith.com/google.com";
+let reqUrl = process.argv[2];
 
 // text telegram format
-function printData(data) {
-    var print;
+const printData = (data) => {
+    var print = "";
     data.forEach(function (value) {
         print += "*" + value.title + "*\n";
-        var items = value.item;
+        let items = value.item;
         items.forEach(function (item) {
             print += "- _" + item.title + "_\n";
         });
@@ -22,15 +22,40 @@ function printData(data) {
     return print;
 }
 
-function scrape (url) {
-    request(url, function(error, response, body){
-        if (!error && response.statusCode == 200) {
-            var data = slicer.builtweb(body);
-            // console.log(data);
+const scrape = async (url) => {
+    return new Promise(
+        (resolve, reject) => {
+            const options = {
+                url : "https://builtwith.com/"+ url,
+                headers : {
+                    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36' 
+                }
+            };
 
-            return printData(data);
+            request(options, function(error, response, body){
+                if (!error && response.statusCode == 200) {
+                    try {
+                        let data = slicer.builtweb(body);
+                        resolve(data);
+                    } catch (err) {
+                        reject("Maaf terjadi gangguan");
+                    }
+                } else {
+                    reject("Jaringan bermasalah"); 
+                } 
+            });    
         } 
+    )
+    .then((data) => {
+        return printData(data); 
+    })
+    .catch((reason) => {
+        return reason; 
     });
 }
 
-scrape(url);
+let res = scrape(reqUrl);
+console.log(res);
+setTimeout(function(){
+    console.log(res);
+}, 7000);

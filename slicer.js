@@ -1,34 +1,33 @@
 // get necessary data from built web com
-var builtWebSlicer = function (contents) {
+const builtWebSlicer = (contents) => {
     // sanitize content
     contents = contents.replace(/(?:\\[rn]|[\r\n]|\\+)+/g, "");
-    var slice = contents.split('<div class="container"><section><div class="row"><div class="span8"><div class="titleBox">');
+    let slice = contents.split('<div class="container"><section><div class="row"><div class="span8"><div class="titleBox">');
     slice = slice[1].split('<div class="titleBox noP"><ul class="nav nav-pills"><li><span>Access more of BuiltWith</span></li></ul>');
     
     // get the base content
-    var baseContent = slice[0];
-    var sliceTitleBox = baseContent.split('<div class="titleBox">');
+    let baseContent = slice[0];
+    let sliceTitleBox = baseContent.split('<div class="titleBox">');
     
     // get the necessary data
-    var data = [];
-    for (var i = 0; i < sliceTitleBox.length; i++) {
-        sliceTitleBox[i] = sliceTitleBox[i].replace(/\\/g,"");
-        var sliceTitle = sliceTitleBox[i].split('<li class="active"><span>');
+    let data = [];
+    for (let body of sliceTitleBox) {
+        let sliceTitle = body.split('<li class="active"><span>');
         sliceTitle = sliceTitle[1].split('</span></li>');
-        var title = sliceTitle[0];
+        let title = sliceTitle[0];
 
-        var sliceItem = sliceTitle[1];
+        let sliceItem = sliceTitle[1];
         sliceItem = sliceItem.split('<div class="techItem">');
-        
-        var item = [];
-        for (var j = 1; j < sliceItem.length; j++) {
-            var subSliceItem = sliceItem[j].split('</a></h3>');
+        sliceItem.splice(0, 1); // remove first element
 
-            var sliceItemTitle = subSliceItem[0];
+        let item = [];
+        for (let bodyItem of sliceItem) {
+            let subSliceItem = bodyItem.split('</a></h3>');
+            let sliceItemTitle = subSliceItem[0];
             sliceItemTitle = sliceItemTitle.split('//trends.builtwith.com/');
             sliceItemTitle = sliceItemTitle[2].split('">');
-            var itemTitle = sliceItemTitle[1];
-            
+            let itemTitle = sliceItemTitle[1];
+
             item.push({
                 "title" : itemTitle,
             });
