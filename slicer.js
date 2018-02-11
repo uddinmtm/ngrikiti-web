@@ -1,5 +1,5 @@
-// get necessary data from built web com
-const builtWebSlicer = (contents) => {
+// get necessary data from built with com
+const builtWithSlicer = (contents) => {
     // sanitize content
     contents = contents.replace(/(?:\\[rn]|[\r\n]|\\+)+/g, "");
     let slice = contents.split('<div class="container"><section><div class="row"><div class="span8"><div class="titleBox">');
@@ -43,6 +43,6 @@ const builtWebSlicer = (contents) => {
 }
 
 module.exports = {
-    builtweb: builtWebSlicer
+    builtweb: builtWithSlicer
 };
  
